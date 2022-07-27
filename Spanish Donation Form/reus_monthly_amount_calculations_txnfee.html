@@ -1,0 +1,138 @@
+<!-- ============================================================================ -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+var $ = $.noConflict(true);
+</script>
+<script type="text/javascript">
+var mode = 0;
+if(typeof monthlyMultiplier === "undefined") {
+  var monthlyMultiplier = 2.0;
+}
+if(typeof monthlyMinimum === "undefined") {
+  var monthlyMinimum = 15;
+}
+if(typeof buildDonationAmounts !== "function") {
+  [[S51:reus_javascript_buildDonationAmounts]]
+  buildDonationAmounts();
+}
+
+var onErrorPage = !!$('#ProcessForm .page-error').length;
+var onErrorSkipFirstMonthly = true;
+
+
+//function for changing the values to monthly
+function makeMonthly(){
+
+  for(var i = 0; i < donate.length; i++){
+    var val = $(".custom-donation-levels #donate-level-"+ i).attr("data-val");
+    var newVal = calculateMonthly(val, i);
+    $(".custom-donation-levels #donate-level-"+ i).attr("data-val", newVal);
+    $("#text-level-" + i).text(newVal + "/mo");
+
+  }
+  if (onErrorPage && onErrorSkipFirstMonthly) {
+    onErrorSkipFirstMonthly = false;
+    mode = 1;
+    return;
+  }
+
+    //$("#cust-level-text").text("/month");
+    var monthlyCalc = calculateMonthly($(".donation-level-user-entered input").val(), 0);
+    if($('.donate-level-container--other').hasClass('selected')) {
+      console.log('there is a value')
+    } else {
+    $(".donation-level-user-entered input").val(monthlyCalc);
+    $('#cust-level-input').val('')
+    // $('#cust-level-input').val(monthlyCalc); // for custom forms
+  }
+  mode = 1;
+}
+
+function makeOneTime(){
+  for(var i = 0; i < donate.length; i++){
+    $(".custom-donation-levels #donate-level-"+ i).attr("data-val", donate[i]);
+    $("#text-level-" + i).text(donate[i]);
+  }
+  console.log($(".donation-level-user-entered input").val());
+  var storedOneTimeVal = $('input[name="cust-level"]:checked').attr("data-val");
+  $(".donation-level-user-entered input").val(storedOneTimeVal);
+  //$('#cust-level-input').val(storedOneTimeVal);
+  mode = 0;
+}
+
+//logic for the monthly/one-time trigger
+if(typeof monthlyRadio !== "undefined" && monthlyRadio === true) {
+  $("#level_flexiblegift_type_Row").before("<div class='form-row' style='display:none;'><div class='form-content'><input name='monthly_trigger' type='radio' id='onetime_trigger' /> <label for='onetime_trigger'>One-time donation</label></div></div><div class='form-row'><div class='form-content'><input name='monthly_trigger' type='radio' id='monthly_trigger' /> <label for='monthly_trigger'>Cambiar a un donativo mensual.</label></div></div>");
+} else {
+  $("#level_flexiblegift_type_Row").before("<div class='form-row' style='display:none;'><div class='form-content'><input name='monthly_trigger' type='checkbox' id='monthly_trigger' /> <label for='monthly_trigger'>Cambiar a un donativo mensual.</label></div></div>");
+}
+
+[[?xx::x[[S334:s_debug]]x::
+$("#level_flexiblegift_type_Row").css("position", "absolute").css("left", "-9999px");
+$("#level_flexibleduration_row").css("position", "absolute").css("left", "-9999px");
+$("#level_flexible_row .don-standard-levels.form-row").css("position", "absolute").css("left", "-9999px");
+::]]
+
+$("[name='monthly_trigger']").change(function(){
+  if($("#monthly_trigger").is( ":checked" )){
+    $("#level_flexiblegift_type2").trigger("click");
+    $("#level_flexibleduration").prop("disabled", false);
+    $("#level_flexibleduration").val('M:0');
+    makeMonthly();
+  }
+  else{
+    $("#level_flexiblegift_type1").trigger("click")
+    $("#level_flexibleduration").prop("disabled", false);
+    makeOneTime();
+  }
+  if(typeof updateButton == "function") { updateButton();}
+});
+$(document).ready(function($) {
+  if ($("input[name='level_flexiblegift_type'][value='2']").is(':checked')) {
+    $("#monthly_trigger").prop('checked', true).trigger('change');
+    $(".donate-level-container input").filter(":checked").trigger('click');
+  } else {
+    if($("#onetime_trigger").length) {
+      $("#onetime_trigger").prop('checked', true).trigger('change');
+    }
+    $("#level_flexiblegift_type1").trigger("click");
+    $("#level_flexibleduration").prop("disabled", false);
+  }
+});
+
+function calculateMonthly(value, index) {
+  //if some monthly amount variable is defined
+  if(typeof definedMonthlyAmounts !== 'undefined' && definedMonthlyAmounts.length) {
+    if(index >= 0 && definedMonthlyAmounts[index]) {
+      return definedMonthlyAmounts[index];
+    } else if(definedMonthlyAmounts.indexOf(value) >= 0) {
+      return definedMonthlyAmounts[definedMonthlyAmounts.indexOf(value)];
+    }
+  }
+
+  var newVal = (value / 12) * monthlyMultiplier;
+  newVal = Math.ceil(newVal/5)*5;
+  if(newVal <= monthlyMinimum){
+      newVal = monthlyMinimum + index;
+  }
+  return newVal;
+}
+
+if(typeof handleSubmit !== "function") {
+  [[S51:reus_javascript_handleSubmit]]
+  handleSubmit();
+}
+
+//monthly ONLY script
+if ($('#responsive_payment_typepay_typeradioach').length > 0 ) {
+  console.log('checking account enabled');
+  $('#maincontent').addClass('monthly-only');
+
+} else {
+  console.log('checking account is NOT enabled');
+}
+
+</script>
+
+<!-- ======================================== -->

@@ -1,0 +1,8 @@
+.btn {
+  &-primary {
+    @include button-variant($primary, $primary, $white, $link-hover-color, $link-hover-color, $white);
+  }
+  &-outline-primary {
+    @include button-outline-variant($primary, $white, $link-hover-color, $link-hover-color);
+  }
+}

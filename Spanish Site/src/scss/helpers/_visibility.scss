@@ -1,0 +1,17 @@
+.visually-hidden--web {
+  body:not(#en__pagebuilder) & {
+    @extend .visually-hidden;
+  }
+}
+
+.invisible--web {
+  body:not(#en__pagebuilder) & {
+    visibility: hidden;
+  }
+}
+
+.d-none--web {
+  body:not(#en__pagebuilder) & {
+    display: none;
+  }
+}

@@ -1,0 +1,63 @@
+<aside id="sidebar" class="d-none d-lg-flex col-lg-3 p-0">
+  <ul class="nav flex-column">
+
+    <li class="nav-item">
+      <a class="nav-link link-dark" href="https://support.bestfriends.org/site/SPageNavigator/spanish_internal_template">ADOPTAR</a>
+
+      <ul class="nav flex-column tier-two collapse" id="spanish_internal_template">
+        <li class="nav-item">
+          <a id="es_test_p_one" class="nav-link link-dark" href="https://support.bestfriends.org/site/SPageNavigator/es_test_p_one">spanish internal template two for testing</a>
+        </li>
+        <li class="nav-item"><a class="nav-link link-dark" href="#">Link 2</a></li>
+        <li class="nav-item"><a class="nav-link link-dark" href="#">Link 3</a></li>
+      </ul>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link link-dark" href="https://support.bestfriends.org/site/SPageNavigator/spanish_three_for_testing">DEFENSA</a>
+      <ul class="nav flex-column tier-two collapse" id="spanish_three_for_testing">
+        <li class="nav-item"><a class="nav-link link-dark" href="#">Link 1</a></li>
+        <li class="nav-item"><a class="nav-link link-dark" href="#">Link 2</a></li>
+        <li class="nav-item"><a class="nav-link link-dark" href="#">Link 3</a></li>
+      </ul>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link link-dark" href="#">SERVIR COMO VOLUNTARIO</a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link link-dark" href="#">HISTORIAS</a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link link-dark" href="#">FORMAS DE DONAR</a>
+    </li>
+
+  </ul>
+</aside>
+
+<script>
+  const currURL = location.pathname.split('/').pop();
+  let currGroup = '';
+
+  document.querySelectorAll('#sidebar a').forEach((el) => {
+    if (el.getAttribute('href').includes(currURL)) {
+      el.classList.add('text-primary');
+    }
+  });
+
+  document.querySelectorAll('#sidebar > ul li ul li a').forEach((el) => {
+    const linkId = el.getAttribute('id');
+    if (linkId == currURL) {
+      currGroup = el.closest('ul').getAttribute('id');
+    }
+  });
+
+  if (currURL == 'spanish_internal_template' || currGroup == 'spanish_internal_template') {
+    document.getElementById('spanish_internal_template').classList.add('show');
+  } else {
+    document.getElementById('spanish_three_for_testing').classList.add('show');
+  }
+
+</script>

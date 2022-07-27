@@ -1,0 +1,145 @@
+<style>
+  section {
+    margin-bottom: 25px;
+  }
+
+  .hero-overlay {
+    background-color: #3d3d3e;
+    padding: 1.5rem;
+  }
+
+  .hero-overlay h1 {
+    width: 75%;
+  }
+
+  .mobile-show {
+    display: inherit;
+  }
+
+  .mobile-hide {
+    display: none;
+  }
+
+  .footer-nav a {
+    display: block !important;
+    text-align: left;
+  }
+
+  @media (min-width: 576px) {
+    section {
+      margin-bottom: 50px;
+    }
+
+    .hero-overlay {
+      background-color: transparent;
+      padding: 0;
+      position: absolute;
+      top: calc(100vw / 5);
+      left: calc(100vh / 8);
+    }
+
+    .hero-overlay h1 {
+      width: auto;
+    }
+
+    .fw-bg-text .container,
+    .standard-copy .container,
+    .standard-copy-btns .container {
+      width: 1122px;
+    }
+
+    .mobile-show {
+      display: none;
+    }
+
+    .mobile-hide {
+      display: inherit;
+    }
+
+    .footer-nav a {
+      display: inherit !important;
+      text-align: center;
+    }
+
+    .footer-nav {
+      display: flex !important;
+      justify-content: center;
+    }
+
+    .footer-nav a {
+      margin-top: 5px !important;
+    }
+  }
+
+  p {
+    letter-spacing: .46px;
+    font-size: 23px;
+    color: #363636;
+  }
+
+  h5 {
+    margin-bottom: .5rem;
+    color: #3d3d3e;
+  }
+
+  h6 {
+    font-size: 22px;
+    margin-bottom: .5rem;
+    color: #000;
+  }
+
+  small {
+    line-height: 1;
+    letter-spacing: .27px;
+  }
+
+  .three-col-standard img {
+    margin-bottom: 14px;
+    border-radius: 50%;
+    padding: 4px;
+    border: 1px solid #ddd;
+  }
+
+  .three-col-standard a {
+    color: inherit !important;
+    text-decoration: none;
+  }
+
+  .three-col-text-overlay .container .row {
+    --bs-gutter-x: 3.5rem;
+  }
+
+  .doodle-img {
+    background-image: url('http://support.bestfriends.org/images/content/pagebuilder/Group_9936.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .bg-img-f7 {
+    background-image: url('http://support.bestfriends.org/images/content/pagebuilder/5050__f7f7f7.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .doodle-img p {
+    color: #363636;
+    font-weight: bold;
+  }
+
+  a.es_icons,
+  .es_logos a {
+    text-decoration: none;
+  }
+
+  .es_blinks {
+    text-align: left;
+    margin-left: 10px;
+  }
+
+  .btn {
+    font-weight: 700;
+  }
+
+</style>

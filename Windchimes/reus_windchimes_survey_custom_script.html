@@ -1,0 +1,61 @@
+<script>
+  function initSurveyCustomScript() {
+    $('#additional_donation_amount').on('keyup change', updateCalculation);
+    $('input[name="faux_level_id"]').on('change', updateCalculation)
+
+    function updateCalculation(e) {
+      $('.js-total-donation-sum').removeClass('error').closest('h3').find('.total-donation-sum-error').remove();
+      var selectedValue = $('input[name="faux_level_id"]:checked').length ? parseFloat($.trim($('input[name="faux_level_id"]:checked').closest('label').text()).replace(/[^0-9\.]/g, '')) : 0;
+      var additionalValue = $.trim($('#additional_donation_amount').val()).length == 0 ? 0 : parseFloat($.trim($('#additional_donation_amount').val()));
+      if (!isNaN(additionalValue) && !isNaN(selectedValue) && selectedValue != 0) {
+        $('.js-total-donation-sum').text('$' + (Math.abs(selectedValue) + Math.abs(additionalValue)).toLocaleString('en-US', {
+          currency: 'USD',
+          currencyDisplay: 'symbol'
+        }));
+        $('#amt-1-total').val((Math.abs(selectedValue) + Math.abs(additionalValue)).toString());
+      } else {
+        $('.js-total-donation-sum').text('$ ---').addClass('error').closest('h3').append('<label class="small error total-donation-sum-error">Invalid additional donation amount</label>');
+        $('.amt-1-total').val("0");
+      }
+    }
+    updateCalculation();
+    $('.survey-question-container').on('zuri.surveyquestions.added', function() {
+      $(this).find('input[type="text"]').attr('maxlength', '20').each(function(index) {
+        $(this).closest('form').append('<input type="hidden" name="s_inscriptionLine' + (index + 1) + '" value="" />');
+      })
+    });
+    $('#api_donation_form').on('zuri.apiform.validated', function() {
+      if ($('.js-total-donation-sum.error').length) {
+        formErrors.push({
+          message: 'invalid additional amount'
+        });
+      }
+      $('.survey-question-container .inscription-error').remove();
+      var inscriptionHasValue = false;
+      var inscriptionHasEmoji = false;
+      var emojiRegex = /([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g;
+      $('.field--survey-question input').each(function(index) {
+        $('input[name="s_inscriptionLine' + (index + 1) + '"]').val($.trim($(this).val()));
+        if ($.trim($(this).val())) {
+          inscriptionHasValue = true;
+        }
+        if (emojiRegex.test($(this).val())) {
+          inscriptionHasEmoji = true;
+        }
+      });
+      if (!inscriptionHasValue) {
+        $('.survey-question-container').prepend('<label class="error inscription-error">Please add your inscription below</label>');
+        formErrors.push({
+          message: 'Please add your inscription below'
+        });
+      }
+      if (inscriptionHasEmoji) {
+        $('.survey-question-container').prepend('<label class="error inscription-error">Please remove all emoji from inscription</label>');
+        formErrors.push({
+          message: 'Please remove all emoji from inscription'
+        });
+      }
+    });
+  }
+
+</script>

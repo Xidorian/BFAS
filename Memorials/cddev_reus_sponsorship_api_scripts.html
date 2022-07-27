@@ -1,0 +1,473 @@
+[[?xxnullx::x[[S334:sponsorship_id]]x::::
+[[U0:sponsorship_id=[[S334:sponsorship_id]]]]
+]]
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/luminateExtend/1.8.1/luminateExtend.min.js"></script>
+<script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.15.1/jquery.validate.min.js"></script>
+<script src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.15.1/additional-methods.min.js"></script>
+<script> window.minAmount = 25; </script>
+<script>
+  function getRedirectURL() {
+    return "https://support.bestfriends.org/site/SPageNavigator/sponsorship_api_thankyou.html";
+  }
+</script>
+[[S51:reus_api_paypal_support_script]]
+[[S51:reus_api_form_validation]]
+
+<script>
+  // Set mobile header image
+  $('.mobile-header img').prop('src', $('.content-image').prop('src'));
+
+  // Donation form - Step 1
+  // adding active classes to donation amts for css
+  $('.donation-level').click(function(){
+    $('.donation-level').removeClass('active');
+
+    $('.donation-level-custom').removeClass('active');
+    $('#amt-other-radio-input').prop('checked', false).trigger('change');
+    $('#amt-other-input').val('');
+
+    $(this).addClass('active');
+  });
+
+  // adding active class to donation other amt for css
+  $('#amt-other-btn').click(function(e) {
+    $('.donation-level').removeClass('active');
+    $('.donation-level input[type="radio"]').prop('checked', false);
+    $('.donation-level-custom').addClass('active');
+    $('#amt-other-radio-input').prop('checked', true).trigger('change');
+  });
+
+  // disable next button unless donation amount is selected
+  /*$('#pstep-1').attr('disabled', 'disabled');
+  $('.donation-level').click(function() {
+    if($(this).find('input[type="radio"]').is(':checked')) {
+      console.log('this is checked');
+      console.log($('#sponsorship1').is(':checked'));
+      if($('#sponsorship1').is(':checked')){
+
+
+        var empty = false;
+        if($('#honor_email_input').val() != '' && $('#tribute_honoree_first_namename').val() != '' && $('#tribute_honoree_last_namename').val() != '') {
+          empty = false;
+        } else {
+          empty = true;
+        }
+
+        if(empty) {
+          $('#pstep-1').attr('disabled', 'disabled');
+        } else {
+          if($('.donation-levels .active').find('input[type="radio"]').is(':checked')) {
+            if($('#amt-other-radio-input').is(':checked')){
+              if($('#amt-other-input').val() != ''){
+                $('#pstep-1').removeAttr('disabled');
+              } else {
+                $('#pstep-1').attr('disabled', 'disabled');
+              }
+            } else {
+              $('#pstep-1').removeAttr('disabled');
+            }
+          }
+        }
+
+
+
+      } else {
+        if($('#amt-other-radio-input').is(':checked')){
+          if($('#amt-other-input').val() != ''){
+            $('#pstep-1').removeAttr('disabled');
+          } else {
+            $('#pstep-1').attr('disabled', 'disabled');
+          }
+        } else {
+          $('#pstep-1').removeAttr('disabled');
+        }
+      }
+    } else {
+      console.log('this is not checked');
+    }
+  });
+  $('#amt-other-input').keyup(function() {
+    if($('#amt-other-input').val() != ''){
+      $('#pstep-1').removeAttr('disabled');
+    } else {
+      $('#pstep-1').attr('disabled', 'disabled');
+    }
+  });*/
+
+  // sponsorship click interaction
+  $('#sponsorship1').click(function(){
+    if($(this).is(':checked')){
+      console.log('checked', $(this).is(':checked'));
+
+      // show the sponsorship fields
+      $('.sponsorship-info-container').show();
+
+      // make the fields required now
+      /*
+      $('#tribute_honoree_first_namename').attr('required','required');
+      $('#tribute_honoree_last_namename').attr('required','required');
+      $('#honor_email_input').attr('required','required');
+      */
+
+      // force a value on this hidden field
+      //$('#tribute_type').val('tribute');
+      $('#tribute_type option:eq(2)').prop('selected', true);
+
+      // disable the next button until all these sponsorship fields are filled out
+      /*$('#pstep-1').attr('disabled', 'disabled');
+
+      // check to see if sponsorship fields are filled out before un-disabling button
+      $('.sponsorship-info-container').on('keyup', 'input', function() {
+        var empty = false;
+        if($('#honor_email_input').val() != '' && $('#tribute_honoree_first_namename').val() != '' && $('#tribute_honoree_last_namename').val() != '') {
+          empty = false;
+        } else {
+          empty = true;
+        }
+
+        if(empty) {
+          $('#pstep-1').attr('disabled', 'disabled');
+        } else {
+          if($('.donation-levels .active').find('input[type="radio"]').is(':checked')) {
+            if($('#amt-other-radio-input').is(':checked')){
+              if($('#amt-other-input').val() != ''){
+                $('#pstep-1').removeAttr('disabled');
+              } else {
+                $('#pstep-1').attr('disabled', 'disabled');
+              }
+            } else {
+              $('#pstep-1').removeAttr('disabled');
+            }
+          }
+        }
+      });*/
+    } else {
+      console.log('not checked', $(this).is(':checked'));
+
+      // hide the sponsorship fields
+      $('.sponsorship-info-container').hide();
+
+      // unrequire them all
+      $('#tribute_honoree_first_namename').removeAttr('required');
+      $('#tribute_honoree_last_namename').removeAttr('required');
+      $('#honor_email_input').removeAttr('required');
+
+      // empty out this hidden field value
+      $('#tribute_type, #tribute_honoree_first_namename, #tribute_honoree_last_namename, #honor_email_input').val('');
+
+      /*if($('.donation-levels .active').find('input[type="radio"]').is(':checked')) {
+        $('#pstep-1').removeAttr('disabled');
+      }*/
+    }
+  });
+
+  // showing and hiding the step sections
+  $('.donation-section').on('click', '.next-step-btn', function(event) {
+    event.preventDefault();
+    if($('.donation-section').hasClass('show-step-1')) {
+      $('.donation-section').removeClass('show-step-1').addClass('show-step-2');
+    } else if($('.donation-section').hasClass('show-step-2')) {
+      $('.donation-section').removeClass('show-step-2').addClass('show-step-3');
+    }
+  });
+  $('.donation-section').on('click', '.prev-step-btn', function(event) {
+    event.preventDefault();
+    if($('.donation-section').hasClass('show-step-2')) {
+      $('.donation-section').removeClass('show-step-2').addClass('show-step-1');
+    } else if($('.donation-section').hasClass('show-step-3')) {
+      $('.donation-section').removeClass('show-step-3').addClass('show-step-2');
+    }
+  });
+
+  // disabling next button on step 2 until all required fields are filled out
+  /*$('#pstep-2').attr('disabled', 'disabled');
+  $('.step-2').on('keyup change', 'input[required], select[required]', function() {
+    var empty = false;
+
+    $('.step-2 input[required], step-2 select[required]').each(function() {
+      if($(this).val() == '') {
+        empty = true;
+      }
+    });
+
+    if(empty) {
+      $('#pstep-2').attr('disabled', 'disabled');
+    } else {
+      $('#pstep-2').removeAttr('disabled');
+    }
+  });*/
+
+  // disable submit button on step 3 until all required fields are filled out
+  /*$('#submit-donation').attr('disabled', 'disabled');
+  $('.step-3').on('keyup change', 'input[required], select[required]', function() {
+    var empty = false;
+
+    $('.step-3 input[required], step-3 select[required]').each(function() {
+      if($(this).val() == '') {
+        empty = true;
+      }
+    });
+
+    if(empty) {
+      $('#submit-donation').attr('disabled', 'disabled');
+    } else {
+      $('#submit-donation').removeAttr('disabled');
+    }
+  });*/
+
+  var states = ["AK","AL","AR","AZ","CA","CO","CT","DC","DE","FL","GA","HI","IA","ID","IL","IN","KS","KY","LA","MA","MD","ME","MI","MN","MO","MS","MT","NC","ND","NE","NH","NJ","NM","NV","NY","OH","OK","OR","PA","RI","SC","SD","TN","TX","UT","VA","VT","WA","WI","WV","WY","AA","AE","AP"];
+  var provinces = ["AB","BC","MB","NB","NL","NS","NT","NU","ON","PE","QC","SK","YT"];
+  var others = {
+    "AS": "American Samoa",
+    "FM": "Federated States of Micronesia",
+    "GU": "Guam",
+    "MH": "Marshall Islands",
+    "MP": "Northern Mariana Islands",
+    "PR": "Puerto Rico",
+    "PW": "Palau",
+    "VI": "Virgin Islands (USA)"
+  }
+
+  // populate hidden fields
+  $("#tribute_honoree_first_namename").change(function(){
+    $("#notificationfirstnamehidden").val($("#tribute_honoree_first_namename").val());
+    $("#s_hidden_notif_first").val($("#tribute_honoree_first_namename").val());
+  });
+  $("#tribute_honoree_first_namename").keyup(function(){
+    $("#notificationfirstnamehidden").val($("#tribute_honoree_first_namename").val());
+    $("#s_hidden_notif_first").val($("#tribute_honoree_first_namename").val());
+  });
+
+  $("#tribute_honoree_last_namename").change(function(){
+    $("#notificationlastnamehidden").val($("#tribute_honoree_last_namename").val());
+    $("#s_hidden_notif_last").val($("#tribute_honoree_last_namename").val());
+  });
+  $("#tribute_honoree_last_namename").keyup(function(){
+    $("#notificationlastnamehidden").val($("#tribute_honoree_last_namename").val());
+    $("#s_hidden_notif_last").val($("#tribute_honoree_last_namename").val());
+  });
+
+
+  $("#honor_email_input").change(function(){
+    $("#s_hidden_notif_email").val($("#honor_email_input").val());
+  });
+  $("#honor_email_input").keyup(function(){
+    $("#s_hidden_notif_email").val($("#honor_email_input").val());
+  });
+
+  luminateExtend({
+    apiKey: '[[S0:CONVIO_API_KEY]]',
+    path: {
+      nonsecure: 'http://[[S29:DOMAIN]][[S29:PATH]]',
+      secure: 'https://[[S29:SECURE_DOMAIN]][[S29:SECURE_PATH]]'
+    }
+  });
+
+  $('#api_donation_form').submit(function(event) {
+    event.preventDefault();
+
+    $('#submit-donation').attr('disabled', 'disabled');
+    if(!$('#sponsorship1').is(':checked')) {
+      // disable the tribute options
+      $('#sponsorship1').prop('disabled', true);
+      $('#tribute_type').prop('disabled', true);
+      $('#tribute_honoree_first_namename').prop('disabled', true);
+      $('#tribute_honoree_last_namename').prop('disabled', true);
+      $('#honor_email_input').prop('disabled', true);
+    }
+
+      luminateExtend.api.request({
+        api: 'donation',
+        callback: donateCallback,
+        form: '#api_donation_form'
+      });
+
+  });
+
+  function donateCallback(data) {
+    var errors = luminateExtend.utils.ensureArray(data.donationResponse.errors);
+    var successfulDonation = luminateExtend.utils.ensureArray(data.donationResponse.donation);
+    var redirect = luminateExtend.utils.ensureArray(data.donationResponse.redirect);
+
+    if(errors.length > 0) {
+      // $('#confirmation').append('Error processing donation. <a href="#" onclick="location.reload(true); return false;">Try Again</a>');
+      // console.log('API Error ('+data.errorResponse.code+'): '+data.errorResponse.message);
+      $('#confirmation').addClass('has-errors');
+      $('#confirmation').html('A problem was encountered while processing your donation. Please review your information and try again.');
+      // invalid card number
+      if( data.donationResponse.errors.declineDetail == 'Sale declined due to [ GatewayDecline : Please call the number on the back of your card.  Your bank requested that we do not honor this card. ]' ) {
+        $('#responsive_payment_typecc_numbername').css('border','1px solid #FF0000');
+        var errorLabel = $('<label/>', {
+            id: 'errorLabel-content',
+            "class": 'error',
+            html: 'Invalid Credit Card Number'
+        });
+        $('#confirmation').append(errorLabel);
+      }
+      // invalid expiration date
+      if( data.donationResponse.errors.declineDetail == 'Sale declined due to [ GatewayDecline : Expired card. ]' ) {
+        $('#responsive_payment_typecc_exp_date_MONTH').css('border','1px solid #FF0000');
+        $('#responsive_payment_typecc_exp_date_YEAR').css('border','1px solid #FF0000');
+        var errorLabel = $('<label/>', {
+            id: 'errorLabel-content',
+            "class": 'error',
+            html: 'Invalid Expiration Date'
+        });
+        $('#confirmation').append(errorLabel);
+      }
+
+
+      //invalid CVV
+      if( data.donationResponse.errors.declineDetail == 'Sale declined due to [ GatewayDecline : Invalid card verification number. ]' ) {
+        $('#responsive_payment_typecc_cvvname').css('border','1px solid #FF0000');
+        var errorLabel = $('<label/>', {
+            id: 'errorLabel-content',
+            "class": 'error',
+            html: 'Invalid CVV'
+        });
+        $('#confirmation').append(errorLabel);
+      }
+      $('#submit-donation').removeAttr('disabled');
+    } else if(redirect.length) {
+      window.location.href = appendSponsorshipParameters(redirect[0].url);
+    } else {
+      window.location.href = appendSponsorshipParameters(getRedirectURL());
+    }
+  };
+
+  function appendSponsorshipParameters(url){
+    var suffix = [];
+    var recipientName = [];
+    var $tributeFirstName = $("#tribute_honoree_first_namename");
+    var $tributeLastName = $("#tribute_honoree_last_namename");
+
+    if(window.sponsorship_id){
+      suffix.push("sponsorship_id="+window.sponsorship_id);
+    }
+
+    if($tributeFirstName.length && $tributeFirstName.val()){
+      recipientName.push($tributeFirstName.val());
+    }
+    if($tributeLastName.length && $tributeLastName.val()){
+      recipientName.push($tributeLastName.val());
+    }
+    if(recipientName.length){
+      var name = recipientName.join("%20");
+      suffix.push("recipient="+name);
+    }
+
+    if(suffix.length){
+      var params = suffix.join("&");
+      url += !!url.match(/\?/) ? "&" : "?"; //add the param join
+      url += params;
+    }
+
+    return url;
+  }
+</script>
+
+
+<script>
+var sponsorship_id = "[[S334:sponsorship_id]]";
+
+[[?xx::x[[S334:sponsorship_id]]x::::
+  $('#sponsor_animal_idhidden').val(sponsorship_id);
+]]
+
+[[?[[S8]]::thankyou::::
+//rescuegroups API
+var data = {
+  apikey : "iE7sMK5D", // Use your API key here
+  objectType : "animals",
+  objectAction : "publicSearch",
+  search : {
+    calcFoundRows : "Yes",
+        resultSort : "animalID",
+        fields:["animalID","animalOrgID","animalName","animalSpecies","animalBreed","animalThumbnailUrl", "animalPictures"],
+        "filters" : [{
+
+                fieldName : "animalID",
+                operation : "equal",
+                criteria : sponsorship_id,
+            }]
+  }
+}
+
+var jsonData = JSON.stringify(data)
+
+$.post("https://api.rescuegroups.org/http/v2.json", jsonData, function(data, status){
+  console.log(data["data"][sponsorship_id]);
+
+
+  if(data["data"][sponsorship_id]){
+    //console.log(data["data"][sponsorship_id]["animalName"]);
+    //$("#animal-description-area").html(data["data"][sponsorship_id]["animalDescription"]);
+    //$(".animal-image").prop("src", data["data"][sponsorship_id]["animalThumbnailUrl"]);
+    if(data["data"][sponsorship_id]["animalName"]){
+      $(".animal-name").text('an animal');
+      $("#sponsor_animal_namehidden").val('an animal');
+      $("#s_hidden_animal_name").val('an animal');
+    } else {
+      $(".animal-name").text(data["data"][sponsorship_id]["animalName"]);
+      $("#sponsor_animal_namehidden").val(data["data"][sponsorship_id]["animalName"]);
+      $("#s_hidden_animal_name").val(data["data"][sponsorship_id]["animalName"]);
+    }
+    if(data["data"][sponsorship_id]["animalSpecies"] == ''){
+      $("#sponsor_animal_typehidden").val('an animal');
+      $("#s_hidden_animal_type").val('an animal');
+    } else {
+      $("#sponsor_animal_typehidden").val(data["data"][sponsorship_id]["animalSpecies"]);
+      $("#s_hidden_animal_type").val(data["data"][sponsorship_id]["animalSpecies"]);
+    }
+    if(data["data"][sponsorship_id]["animalPictures"][0]["urlSecureFullsize"] == ''){
+      $("#s_hidden_animal_image").val('https://secure2.convio.net/bfas/images/content/pagebuilder/donation-image.png');
+      $(".content-image").prop("src", "https://secure2.convio.net/bfas/images/content/pagebuilder/donation-image.png");
+      $(".mobile-header img").prop("src", "https://secure2.convio.net/bfas/images/content/pagebuilder/donation-image.png");
+    } else {
+      $("#s_hidden_animal_image").val(data["data"][sponsorship_id]["animalPictures"][0]["urlSecureFullsize"]);
+      $(".content-image").prop("src", data["data"][sponsorship_id]["animalPictures"][0]["urlSecureFullsize"]);
+      $(".mobile-header img").prop("src", data["data"][sponsorship_id]["animalPictures"][0]["urlSecureFullsize"]);
+    }
+    // $("#s_hidden_animal_description").val(data["data"][sponsorship_id]["animalDescription"]);
+  } else {
+    $(".animal-name").text('an animal');
+    $("#sponsor_animal_namehidden").val('an animal');
+    $("#s_hidden_animal_name").val('an animal');
+    $("#sponsor_animal_typehidden").val('an animal');
+    $("#s_hidden_animal_type").val('an animal');
+    $("#s_hidden_animal_image").val('https://secure2.convio.net/bfas/images/content/pagebuilder/donation-image.png');
+    $(".content-image").prop("src", "https://secure2.convio.net/bfas/images/content/pagebuilder/donation-image.png");
+    $(".mobile-header img").prop("src", "https://secure2.convio.net/bfas/images/content/pagebuilder/donation-image.png");
+  }
+  if(data["data"][sponsorship_id]["animalName"] == ''){
+    $(".animal-name").val('an animal');
+    $("#sponsor_animal_namehidden").val('an animal');
+    $("#s_hidden_animal_name").val('an animal');
+  } else {
+    $(".animal-name").text(data["data"][sponsorship_id]["animalName"]);
+    $("#sponsor_animal_namehidden").val(data["data"][sponsorship_id]["animalName"]);
+    $("#s_hidden_animal_name").val(data["data"][sponsorship_id]["animalName"]);
+  }
+  if(data["data"][sponsorship_id]["animalSpecies"] == ''){
+    $("#sponsor_animal_typehidden").val('an animal');
+    $("#s_hidden_animal_type").val('an animal');
+  } else {
+    $("#sponsor_animal_typehidden").val(data["data"][sponsorship_id]["animalSpecies"]);
+    $("#s_hidden_animal_type").val(data["data"][sponsorship_id]["animalSpecies"]);
+  }
+  if(data["data"][sponsorship_id]["animalPictures"][0]["urlSecureFullsize"] == ''){
+    $("#s_hidden_animal_image").val('https://secure2.convio.net/bfas/images/content/pagebuilder/donation-image.png');
+    $(".content-image").prop("src", "https://secure2.convio.net/bfas/images/content/pagebuilder/donation-image.png");
+    $(".mobile-header img").prop("src", "https://secure2.convio.net/bfas/images/content/pagebuilder/donation-image.png");
+  } else {
+    $("#s_hidden_animal_image").val(data["data"][sponsorship_id]["animalPictures"][0]["urlSecureFullsize"]);
+    $(".content-image").prop("src", data["data"][sponsorship_id]["animalPictures"][0]["urlSecureFullsize"]);
+    $(".mobile-header img").prop("src", data["data"][sponsorship_id]["animalPictures"][0]["urlSecureFullsize"]);
+  }
+  // $("#s_hidden_animal_description").val(data["data"][sponsorship_id]["animalDescription"]);
+
+});
+]]
+</script>

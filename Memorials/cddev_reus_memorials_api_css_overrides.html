@@ -1,0 +1,420 @@
+<!-- [[?x3301x::x[[S4]]x::[[?xx::x[[S24]]x::[[U1:wysiwyg=none]]::]]::]] -->
+[[?[[S8]]::/admin::
+::
+<!-- placing this CSS in its own style tag because otherwise it breaks everything in IE11 -->
+<style>
+body {
+	overflow: auto;
+}
+body:after{
+   position:absolute; width:0; height:0; overflow:hidden; z-index:-1;
+   content:url(https://secure2.convio.net/bfas/images/content/pagebuilder/[[S80:PetMemorialHeroDesktopImage]]) url(https://secure2.convio.net/bfas/images/content/pagebuilder/[[S80:PersonMemorialHeroDesktopImage]] url(https://secure2.convio.net/bfas/images/content/pagebuilder/[[S80:PetMemorialHeroMobileHeroImage]] url(https://secure2.convio.net/bfas/images/content/pagebuilder/[[S80:PersonMemorialHeroMobileHeroImage]]);
+}
+
+</style>
+<!-- end IE11 isolation fix -->
+<style type="text/css">
+
+.pet-bg-mobile, .person-bg-mobile, .person-text, .eCard-thankyou, .mail-thankyou, .noCard-thankyou, .fieldRequired  {
+	display: none;
+}
+#maincontent {
+    background-image: url(https://secure2.convio.net/bfas/images/content/pagebuilder/memorial-pet-desktop-hugo.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+	padding: 0 60px;
+	overflow: hidden;
+}
+div.donation-form-container.responsive {
+    background: transparent;
+	padding-top: 30px;
+	width: 1366px;
+}
+.donation-section {
+    background: #FFF;
+    box-shadow: 0px 3px 99px #000000;
+	width: 566px;
+	min-height: auto;
+	padding: 20px 35px 60px;
+}
+.step-1, .step-2, .step-3, .step-4 {
+	display: block;
+	padding: 0;
+}
+div.responsive input[type="text"], div.responsive input[type="number"], div.responsive input[type="password"], div.responsive textarea, div.form-row div.form-content > select, div.form-row div.form-content > input[type="text"], div.form-row div.form-content input.ui-autocomplete-input, div.form-row div.form-content > textarea, div.form-row div.form-content > button, select {
+    border: 1px solid #A5A5A5;
+	border-radius: 0px !important;
+	-webkit-border-radius: 0px !important;
+	-moz-border-radius: 0px !important;
+    background: #EAEAEA;
+	font-size: 14px;
+	color: #636466;
+}
+select {
+	border: 0;
+	outline: 1px solid #A5A5A5;
+	outline-offset: -1px;
+	height: 40px;
+}
+#amt-other-input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: #636466 !important;
+  opacity: 1;
+}
+#amt-other-input::-moz-placeholder { /* Firefox 19+ */
+  color: #636466 !important;
+  opacity: 1;
+}
+#amt-other-input:-ms-input-placeholder { /* IE 10+ */
+  color: #636466 !important;
+  opacity: 1;
+}
+#amt-other-input:-moz-placeholder { /* Firefox 18- */
+  color: #636466 !important;
+  opacity: 1;
+}
+.step-1 h3, .step-2 h3, .step-3 h3, .step-4 h3 {
+	font-size: 24px;
+	font-weight: bold;
+	margin: 10px 0 20px;
+}
+.step-1 h3 span, .step-2 h3 span, .step-3 h3 span, .step-4 h3 span {
+	font-size: 16px;
+	font-weight: normal;
+}
+div.donation-form-container.responsive .field-container--text label, div.donation-form-container.responsive .field-container--select label {
+	color: #373737;
+	display: block;
+	font-size: 14px;
+	font-weight: normal;
+}
+.pet-person {
+	margin: 30px 0;
+}
+div.donation-form-container.responsive div.col-md-6.donation-section.thank-you h1 {
+    margin-bottom: 20px;
+}
+
+div.donation-form-container.responsive div.col-md-6 p {
+	font-size: 16px;
+	font-weight: bold;
+	margin: 0;
+}
+div.donation-form-container.responsive div.col-md-6.donation-section.thank-you p {
+	font-size: 16px;
+	font-weight: normal;
+	margin: 0 0 20px;
+}
+div.donation-form-container.responsive div.col-md-6 .donation-amount-p {
+	margin: 0 0 10px;
+}
+.pet-person button {
+	background-color: #727375;
+	display: inline-block;
+	font-size: 22px;
+	height: 50px;
+	padding: 12px 22px;
+	width: auto;
+	text-transform: none;
+}
+.pet-person button:hover, .pet-person button.active {
+    background-color: #f58220;
+    cursor: pointer;
+}
+.donation-levels {
+	margin-bottom: 30px;
+}
+.donation-section .donation-level {
+    border-right: none;
+	width: 73px;
+}
+.donation-section .donation-level-custom, .donation-section .donation-level-custom:hover, .donation-section .donation-level-custom.active {
+	background-color: #EAEAEA;
+	border: 1px solid #A5A5A5;
+}
+.donation-section .donation-level-custom {
+	color: #636466;
+	width: 185px;
+}
+.donation-section .donation-level-custom label[for="amt-other-radio-input"] input[type="text"] {
+	color: #636466;
+	font-size: 14px;
+	padding: 6px 0;
+	line-height: 1.4;
+	width: 154px;
+	left: 25px;
+}
+.donation-section .donation-level-custom label[for="amt-other-radio-input"] {
+    width: 185px;
+}
+.donation-section .donation-level-custom .dollar-sign {
+	bottom: 22px;
+	color: #636466;
+	/* display: none; */
+	left: 9px;
+}
+.make-33-container, .make-50-container {
+	display: inline-block;
+}
+.sponsorship-option {
+    padding: 0;
+    margin-bottom: 20px;
+}
+.send-a-card {
+	margin: 0 0 30px 0;
+}
+.cardOptions {
+	margin: 0 0 20px 0;
+}
+.send-a-card button {
+	background-color: #727375;
+	color: #ffffff;
+	display: inline-block;
+	font-size: 22px;
+	height: 50px;
+	padding: 12px 21px;
+	width: auto;
+	text-transform: none;
+	margin: 0px 6px 0px 0;
+}
+.send-a-card button:last-child {
+	margin-right: 0;
+}
+.send-a-card button:hover, .send-a-card button.active {
+    background-color: #f58220;
+    cursor: pointer;
+}
+.cardOptions {
+	display: none;
+}
+.field-container--text, .field-container--select {
+	margin-bottom: 10px;
+}
+.field--notify-first, .field--billing-city, .field--billing-email, .field--notify-city, .field--billing-state, .field--notify-state, .field--billing-first {
+	margin-right: 10px;
+}
+.field--notify-first, .field--notify-last, .field--notify-city, .field--billing-first, .field--billing-last, .field--billing-city, .field--billing-email, .field--billing-phone {
+	width: 240px;
+}
+.field--notify-street1, .field--notify-email, .field--notify-country {
+	width: 100%;
+}
+.field--billing-country {
+	height: auto;
+	width: 100%;
+}
+#billing_addr_country {
+	width: 366px;
+}
+.field--billing-state, .field--notify-state, .field--billing-zip, .field--notify-zip, .field--expiration-date select, .field--cvv-number {
+	height: auto;
+	width: 113px;
+}
+.field--expiration-date select {
+	height: 40px;
+}
+.field--expiration-date {
+	width: 251px;
+}
+div.field-container--radio {
+	margin-bottom: 20px;
+}
+.field--payment-type span.field-container--radio-option input {display: none;}
+
+.field--payment-type button, .field--payment-type span.field-container--radio-option label {
+	background-color: #727375;
+	color: #ffffff;
+	display: inline-block;
+	font-size: 22px;
+	height: 50px;
+	padding: 12px 21px;
+	width: auto;
+	text-transform: none;
+	margin: 0px 6px 0px 0;
+	line-height: 1.3;
+}
+.field--payment-type button:hover, .field--payment-type button.active, .field--payment-type span.field-container--radio-option label:hover, .field--payment-type span.field-container--radio-option label.active {
+    background-color: #f58220;
+    cursor: pointer;
+}
+.field--expiration-date-div {
+	display: inline-block;
+	margin-right: 10px;
+}
+.field--expiration-date-div:last-child {
+	margin-right: 0;
+}
+button#submit-donation {
+	font-size: 22px;
+	width: 100%;
+	height: 50px;
+	padding: 10px 0px;
+	float: none;
+	text-transform: none;
+}
+
+
+@media screen and (-ms-high-contrast: active),(-ms-high-contrast: none) {
+	button, div.donation-form-container.responsive .field-container--text label, div.donation-form-container.responsive .field-container--select label, .donation-section .donation-level-custom label[for='amt-other-radio-input'] input[type='text'], .donation-section .donation-level, select, div.responsive input[type='text'], div.responsive input[type='number'], div.responsive input[type='password'], div.responsive textarea, div.form-row div.form-content > select, div.form-row div.form-content > input[type='text'], div.form-row div.form-content input.ui-autocomplete-input, div.form-row div.form-content > textarea, div.form-row div.form-content > button, select {
+		font-family: Arial;
+		font-weight: normal;
+	}
+	.donation-section .donation-level {
+		line-height: 16px;
+	}
+}
+
+@supports (-ms-ime-align:auto) {
+	button, div.donation-form-container.responsive .field-container--text label, div.donation-form-container.responsive .field-container--select label, .donation-section .donation-level-custom label[for='amt-other-radio-input'] input[type='text'], .donation-section .donation-level, select, div.responsive input[type='text'], div.responsive input[type='number'], div.responsive input[type='password'], div.responsive textarea, div.form-row div.form-content > select, div.form-row div.form-content > input[type='text'], div.form-row div.form-content input.ui-autocomplete-input, div.form-row div.form-content > textarea, div.form-row div.form-content > button, select {
+		font-family: Arial;
+		font-weight: normal;
+	}
+	.donation-section .donation-level {
+		line-height: 16px;
+	}
+}
+
+.card-options {
+    margin: 0 0 20px;
+}
+a.card-option, a.card-option:link {
+    display: block;
+    width: 365px;
+    background-color: #f58220;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 12px 15px;
+    box-sizing: border-box;
+    text-transform: none;
+    margin-bottom: 10px;
+    font-size: 16px;
+    cursor: pointer;
+	line-height: 1.4;
+}
+
+div.responsive .fieldRequired {
+    width: 100%;
+    font-size: 80% !important;
+    color: red !important;
+    font-style: italic;
+    font-weight: bold;
+}
+
+@media (min-width: 993px) {
+.show-mobile {
+  display: none !important;
+}
+}
+@media (max-width: 1200px) {
+div.donation-form-container.responsive {
+	width: 100%;
+}
+}
+@media (max-width: 992px) {
+.show-desktop {
+  display: none !important;
+}
+.show-mobile {
+  display: block !important;
+}
+div.donation-form-container.responsive {
+	padding: 0 !important;
+	width: 100% !important;
+}
+#maincontent {
+	background: none !important;
+	background-image: none !important;
+	padding: 0;
+	overflow: auto !important;
+}
+.donation-section {
+	box-shadow: none;
+	padding: 0 20px 25px;
+	width: 100%;
+}
+.donation-section h1 {
+	margin-top: 20px
+}
+.make-33-container, .make-50-container, .field--expiration-date {
+	margin-left: auto;margin-right: auto;position: relative;display: -webkit-flex;display: -ms-flexbox;display: flex;-webkit-flex: 1 1 auto;-ms-flex: 1 1 auto;flex: 1 1 auto;-webkit-backface-visibility: hidden;backface-visibility: hidden;-webkit-flex-wrap: wrap;-ms-flex-wrap: wrap;flex-wrap: wrap;
+}
+.step-1 h3, .step-2 h3, .step-3 h3, .step-4 h3 {
+	font-size: 18px;
+}
+.span-required {
+	display: block;
+	font-size: 14px !important;
+	margin-top: 5px;
+}
+.form-bg-mobile img {
+	max-width: 100%;
+}
+.pet-bg-mobile.active {
+	display: block;
+}
+.pet-person button, .send-a-card button, .field--payment-type button, .field--payment-type span.field-container--radio-option label, .field-container--radio.field--payment-type div.field-container--radio-row span.field-container--radio-option {
+	flex: 1;
+	width: 100%;
+	padding: 12px 0px;
+	font-size: 21px;
+	text-align: center;
+}
+.send-a-card button:last-child, .field--payment-type button:last-child {
+	margin-right: 0;
+}
+.pet-person button#pet-1, .send-a-card button:first-child, .send-a-card button:nth-child(2), .donation-section .donation-level:first-child, .donation-section .donation-level:nth-child(2) {
+	margin-right: 10px;
+}
+.donation-section .donation-level {
+	flex: 1;
+	width: 100%;
+}
+.donation-section .donation-level-custom {
+	display: block;
+	margin-top: 10px;
+}
+.donation-section .donation-level-custom label[for="amt-other-radio-input"] input[type="text"] {
+	width: 300px;
+}
+.field--notify-first, .field--billing-city, .field--billing-email, .field--notify-city, .field--billing-state, .field--notify-state, .field--billing-first {
+	margin-right: 10px;
+}
+.donation-section .donation-level-custom, .donation-section .donation-level-custom label[for="amt-other-radio-input"], .field--notify-first, .field--notify-last, .field--notify-city, .field--billing-first, .field--billing-last, .field--billing-city, .field--billing-email, .field--billing-phone, #billing_addr_country, #billing_addr_street1name, #donor_email_addressname, #donor_phonename, #responsive_payment_typecc_numbername, .field--expiration-date, .field--billing-state, .field--notify-state, .field--billing-zip, .field--notify-zip, .field--expiration-date select, .field--cvv-number, #responsive_payment_typecc_exp_date_MONTH, #responsive_payment_typecc_exp_date_YEAR {
+	width: 100% !important;
+}
+.field--billing-state, .field--notify-state, .field--billing-zip, .field--notify-zip {
+	padding: 0;
+	width: 100%;
+	min-width: auto;
+	flex: 1;
+}
+.field--expiration-date-div {
+	display: inline-block;
+	margin-right: 10px;
+	flex: 1;
+}
+.field--payment-type button, .field--payment-type span.field-container--radio-option label {
+	margin: 0 10px 0 0;
+}
+a.card-option, a.card-option:link {
+  width: 100% !important;
+}
+}
+@media (max-width: 360px) {
+.donation-section .donation-level {
+	line-height: 15px;
+}
+.donation-section .donation-level, .pet-person button, .send-a-card button, .field--payment-type button, .field--payment-type span.field-container--radio-option label {
+	font-size: 18px;
+}
+.field--payment-type button, .field--payment-type span.field-container--radio-option label {
+    line-height: 1.6;
+}
+.donation-section .donation-level-custom label[for="amt-other-radio-input"] input[type="text"] {
+	width: 250px;
+}
+}
+</style>
+]]

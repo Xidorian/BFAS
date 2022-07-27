@@ -1,0 +1,351 @@
+<style type="text/css"><!--
+    #total-gift-amount {
+      display: none;
+    }
+    #additional_amount_row {
+     display: none;
+    }
+
+
+    #process-fees-container {
+      margin-top: 1.25em;
+      margin-bottom: 1em;
+      position: relative;
+      font-family: "Lato", sans-serif;
+    }
+
+    #process-fees-container label {
+        display: block;
+        margin-left: 19px;
+        color: #3d3d3e;
+        font-size: 14px;
+        font-family: 'HelveticaNeueW02-55Roma', Arial, sans-serif;
+    }
+
+    #process-fees-container input[type="checkbox"] {
+        display: block;
+        float: left;
+        margin: 4px 0 0;
+    }
+
+
+    #total-gift-amount {
+      background-color: #FFFFFF;
+      height: 20px;
+      text-align: center;
+      color: #1B7FA7;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    /*.donation-level-total-label {
+      float: left;
+    }
+    */
+    .process-fees, .dollar-sign {
+      /*color: #1B7FA7;*/
+      font-weight: bold;
+      /*font-size: 1.15em;*/
+    }
+
+    div.button-container .button-sub-container {
+     margin-top: 0!important;
+    }
+
+    .form-submission-message {
+        display: block;
+        box-shadow: 0 0 15px black inset;
+        padding: 2em;
+        background: linear-gradient(45deg, #2a542a, 20%, transparent), linear-gradient(-45deg, #6200ffad, 5%, black);
+        border: none;
+        color: white;
+        overflow: hidden;
+    }
+
+    .form-submission-message h1 {
+        margin-top: 0;
+        color: lime;
+        border-bottom: 1px solid white;
+        margin-bottom: .5em;
+    }
+
+    .form-submission-message p {
+        margin-bottom: 1em;
+        color: white;
+    }
+    .form-submission-message .amount {
+        font-size: 45px;
+        color: lime;
+        vertical-align: middle;
+        line-height: 1.5em;
+    }
+    .form-submission-message .sVar {
+        color: lime;
+        font-size: 30px;
+        vertical-align: middle;
+        line-height: 1.5em;
+    }
+    .form-submission-message p.smaller {
+        font-size: .8em;
+        color: #aaa;
+    }
+    .form-submission-message .highlight {
+        color: hotpink;
+        font-size: .9em;
+    }
+    .form-submission-message a.btn:hover {
+        border-left: 5px solid white;
+    }
+
+    .form-submission-message a.btn {
+        padding: .4em .7em;
+        border: none;
+        border-radius: 0;
+        background: rebeccapurple;
+        border-left: 5px solid black;
+    }
+    .form-submission-message a.btn.active {
+        background: #5ac55a;
+        color: black;
+        font-weight: bold;
+    }
+    .form-submission-message, .form-submission-message * {
+        font-family: monospace !important;
+    }
+    div#QA-main:before {
+        content: 'QA';
+        width: 30px;
+        height: 30px;
+        display: block;
+        background: radial-gradient(lime, #2bc119);
+        position: fixed;
+        box-shadow: 6px 11px 7px rgba(0,0,0,.2);
+        border: 1px solid #c1c322;
+        line-height: 30px;
+        text-align: center;
+        color: #357d10;
+        font-weight: bold;
+    }
+
+</style>
+<!--START OF HTML-->
+<p> </p>
+<!-- <div id="process-fees-container"><input id="additional_gift_checkbox" class="radio additional_gift_checkbox" name="additional_gift_checkbox" value="" type="checkbox">
+    <label class="additional_gift_checkbox" for="additional_gift_checkbox">
+    <span class="dollar-sign">Añada $</span><span class="process-fees">0.00</span>
+    <span class="dollar-sign">a mi donativo para ayudar a cubrir los cargos de procesamiento para que una mayor porción de mi donativo se destine a los animales.
+    </label>
+    </div> -->
+<div id="total-gift-amount">Monto total del donativo: $<span class="donation-level-total-amount">0.00</span></div>
+<!--END OF HTML-->
+<script type="text/javascript">// <![CDATA[
+    $(document).ready(function() {
+        console.log('onload, user val is ', $('.donation-level-user-entered input').val());
+
+      var ccFeeGlobalAmt = 0.03;
+
+      //CONDTIONAL TO AUTO CHECK PROCESSING FEE CHECKBOX
+      [[?x[[S334:mfc_pref]]x::xTx::
+        //LIST OF FORM IDS WITH THE PROCESSING FEE NOT CHECKED
+        [[?x0000x::x[[S334:df_id]]x::
+        ::
+          // $("#additional_gift_checkbox").prop( "checked", true );
+        ]]
+      ::
+      ]]
+
+      function errorPageHandler() {
+          // split the fee out of the donation amount
+          var errorOnPage = $('#ProcessForm .ErrorMessage').length;
+          var transactionFeeSelected = $('#transaction_fee_checkbox_radio').is(':checked');
+          var donObj = calcDonObj();
+          var feeReverseCalc = (donObj.don - (donObj.don/(1+ccFeeGlobalAmt))).toFixed(2);
+          var donReverseCalc = donObj.don - feeReverseCalc;
+
+          if (errorOnPage && transactionFeeSelected) {
+                // strip the processing fee out of the actual amount, in case user changes the amount
+                console.log('error page detected. Fee selected. Calculating change.');
+                console.log(donObj);
+                $('#additional_amountname').val(feeReverseCalc);
+                $('#donate-level-custom').attr('data-val',donReverseCalc);
+                $(".donation-level-user-entered input").val(donReverseCalc);
+                $('#cust-level-input').val(donReverseCalc);
+
+                if($('#additional_amountname').val().indexOf("$") != -1){
+                   // if there is an additional amount populated
+                    $("#transaction_fee_checkbox_radio").prop( "checked", true );
+                    updateFeeFields();
+                }
+          }
+
+      }
+
+      function calcDonObj() {
+
+        var donObj = {}
+
+        // hook into the hidden field because this is what gets updated last by other code
+        var don = parseFloat($('input[name*=level_flexibleexpanded][id*=amount]').val());
+            don = !isNaN(don) ? don : 0;
+
+        // having to do defensive programming here
+        // the "monthly" amounts are not accurate representation of submitted form state,
+        // see ruesable reus_javascript_handleSubmit
+        // var customFieldAmt = parseFloat($('input[name="cust-level"]:checked').attr("data-val"));
+        //     customFieldAmt = !isNaN(customFieldAmt) ? customFieldAmt : 0;
+        // if(!(customFieldAmt === don)) {
+        //   don = customFieldAmt;
+        // }
+
+        var fee = (don * ccFeeGlobalAmt).toFixed(2);
+
+        var donPlusFee = decimalChecker(don + don * ccFeeGlobalAmt);
+        var donPlusFee_Formatted = numberWithCommas(donPlusFee);
+
+
+        donObj.don = don;
+        donObj.fee = fee;
+        donObj.donPlusFee = donPlusFee;
+        donObj.donPlusFee_Formatted = donPlusFee_Formatted;
+
+        return donObj;
+      }
+
+      function updateFeeFields() {
+        var donObj = calcDonObj();
+        var feeIsActive = ($('#transaction_fee_checkbox_radio:checked').is(':checked'));
+
+        // UPDATE LABELS
+        // ADDING AMOUNT WITH FEE TO CHECKBOX DESCRIPTION
+        $("label[for='transaction_fee_checkbox_radio']").html("<strong>Añada $" + numberWithCommas(donObj.fee) + " a mi donativo para ayudar a cubrir los cargos de procesamiento</strong> para que una mayor porción de mi donativo se destine a los animales.");
+
+        //ADDING AMOUNT WITHOUT FEE TO CHECKBOX DESCRIPTION
+        $(".donation-level-total-amount").text(numberWithCommas(donObj.don));
+
+        //ADDING FEE TO HIDDEN ADDITIONAL AMOUNT FIELD IF PROCESSING FEE CHECKBOX IS CHECKED
+        if(feeIsActive){
+            $('#additional_amountname').val(donObj.fee);
+            // $(".donation-level-total-amount").text(donPlusFee_Formatted);
+        } else {
+          $('#additional_amountname').val('');
+          // $(".donation-level-total-amount").text(don);
+        }
+        updateButton();
+      }
+
+      // not using this -- instead doing the same by clueing off the existing "fake submit button" event listeners
+      // see reus_donation_form_txnfee and reus_javascript_handleSubmit_txnfee
+      function hijackSubmit() {
+          //combine the transaction fee with the "other" amount
+            $('#ProcessForm').on('submit', function(e){
+                    if($('#additional_gift_checkbox').is(':checked')){
+                        var userAmt = 0;
+                        userAmt = parseFloat($('.donation-level-user-entered input').val());
+
+                        var addtlAmt = parseFloat($('#additional_amountname').val());
+                        $('#additional_amountname').val('');
+
+                        var valueWithFee = ((!isNaN(userAmt) ? userAmt : 0 ) + (!isNaN(addtlAmt) ? addtlAmt : 0)).toFixed(2);
+                        $('.donation-level-user-entered input').val(valueWithFee);
+                    }
+            })
+      }
+
+      var QAControls = "<p>&emsp;<a class='btn [[?[[S80:QA]]::T::active::]]' href='https://support.bestfriends.org/site/Donation2?df_id=3142&mfc_pref=T&3142.donation=form1&s_QA=T&s_QAErrorPage=F'>Test: Main Page</a>&emsp;<a class='btn [[?[[S80:QAErrorPage]]::T::active::]]' href='https://support.bestfriends.org/site/Donation2?df_id=3142&mfc_pref=T&3142.donation=form1&s_QA=F&s_QAErrorPage=T'>Test: Error Page</a>&emsp;<a class='btn' href='https://support.bestfriends.org/site/Donation2?df_id=3142&mfc_pref=T&3142.donation=form1&s_QA=F&s_QAErrorPage=F'>Exit QA Mode</a></p>";
+
+      function loadQAGreeting() {
+        $('body').prepend("<div id='QA-main' class='form-submission-message'><div class='content-container'><h1>QA ACTIVE</h1><p>&gt; The form will not submit to the server.</p>" + QAControls + "<hr><p class='smaller'>Session Details: s_QA=<convio:session param="QA" name="80"></convio:session> | s_QAErrorPage = <convio:session param="QAErrorPage" name="80"></convio:session></p></div></div>");
+      }
+
+      function QAHijackSubmit() {
+        // a function to interrupt form submission for QA purposes
+        $('#ProcessForm').on('submit', function(e){
+            e.preventDefault();
+            var QAmessage = "<div class='form-submission-message'><h3 class='highlight'>&gt; Form submission interrupted.</h3><p><strong>Donation amount</strong>:<br>&emsp;&emsp;[<span class='amount'> " + $('.donation-level-user-entered input').val() + " </span>]</p><p><strong>Additional amount</strong>: <br>&emsp;&emsp;[<span class='amount'> " + $('#additional_amountname').val() + " </span>]</p></div>";
+            $('#ProcessForm').append(QAmessage);
+        });
+      }
+
+      // - - - - - - - - - -- ---- - - - - - -- - - -
+      // EVENT LISTENERS
+
+      function connectProcessingFeeTriggers() {
+
+        // hook into the hidden donation level change
+        $('input[name*=level_flexibleexpanded][id*=amount]').on('change', function(){
+            console.log('custom-amount changed. value is now ', $(this).val());
+          updateFeeFields();
+        });
+
+        // Monthly Checkbox
+        $('#monthly_trigger').on('change', function() {
+            updateFeeFields();
+        });
+
+        // $('#cust-level-input').on('focus', function(){
+        //     console.log('cust-level-input focused');
+        //     updateFeeFields();
+        // })
+
+        // gift checkbox
+        $('#transaction_fee_checkbox_radio').on('change', function() {
+            updateFeeFields();
+        })
+      }
+
+      // - - - - -  - - - - - - - - - - - - -
+      // Self-invoking init function
+      (function processingFeeInit() {
+
+        $('label[for*=transaction_fee_checkbox_dropdown]').addClass('sr-only');
+
+        console.log('init is running')
+
+        // Error Form handling
+        errorPageHandler();
+
+        // string up the event listeners
+        connectProcessingFeeTriggers();
+
+        // Run On Page Load (for pre-selected values)
+        updateFeeFields();
+
+
+        [[?[[S80:QAErrorPage]]::T::
+            loadQAGreeting();
+            if($('#ProcessForm .ErrorMessage').length)  {
+                QAHijackSubmit();
+            }
+        ::
+            [[?[[S80:QA]]::T::
+                loadQAGreeting();
+                QAHijackSubmit();
+            ::]]
+        ]]
+      })();
+
+
+      // - - - - -  - - - - - - - - - - - - -
+      // Helper Functions
+      function decimalChecker(num) {
+        // console.log('num is ' + num);
+        return (num % 1 != 0) ? num.toFixed(2) : num.toFixed(0); // remove decimal if .00
+      }
+
+      function numberWithCommas(x) {
+        var parts = x.toString().split(".");
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return parts.join(".");
+      }
+
+    });//end doc ready}
+
+
+// ]]></script>
+<p>[[?x[[S80:showForm]]x::T::</p>
+<style type="text/css"><!--
+        .don-standard-levels.form-row { position: static !important; }
+        #additional_amount_row { display: block !important; }
+        .donate-level-container input[type="radio"], div.donation-level-label-input-container { display: inline !important; }
+--></style>
+<p>::]]</p>

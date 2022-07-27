@@ -1,0 +1,112 @@
+<!-- DO NOT EDIT -->
+<!-- ======================================== -->
+
+<div class="modal fade" tabindex="-1" role="dialog">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-6 hidden-sm hidden-xs" style="padding-left:0; position:relative">
+						<img class="img-responsive" src="../images/content/pagebuilder/Monthly_lightbox_Tigger.jpg">
+						<img style="position:absolute;left:0;bottom:0;" src="../images/content/pagebuilder/monthly-logo.png">
+					</div>
+					<div class="col-md-6 col-sm-12" style="text-align:center;">
+						<h1>Que mi donativo
+							<br /> sea mensual
+						</h1>
+						<p>Gracias por su generoso apoyo. Antes de que confirmemos su donativo, <strong>¿consideraría hacer un donativo mensual de $<span class="modal-amt"></span>?</strong></p>
+						<p class="js-non-golden-circle">Su apoyo mensual proporcionará atención estable y confiable para los animales, justo cuando más lo necesitan.</p>
+						<p class="js-golden-circle">Su apoyo mensual proporcionará atención estable y confiable para los animales, justo cuando más lo necesitan.</p>
+						<button type="button" class="btn">¡Sí, comiencen a deducir
+							<br />hoy mismo mi donativo
+							<br />mensual de $<span class="modal-amt"></span>!
+						</button>
+						<br />
+						<a>No gracias, continúen procesando mi donativo como un monto de una sola vez.</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+	$(".modal-content .btn").click(function() {
+		if ($('input[name="upsell_statushidden"]').length) {
+			$('input[name="upsell_statushidden"]').val('Y-' + $('input[name="cust-level"]:checked').attr("data-val"));
+		}
+		$("#monthly_trigger").prop('checked', true).trigger('change');
+		var val = $('input[name="cust-level"]:checked').attr("data-val");
+		if ($('input[name="cust-level"]:checked').closest('.donate-level-container--other').length) {
+			val = calculateMonthly(val, 0);
+		}
+		if ($('#additional_amountname').length) {
+			$('#additional_amountname').val('');
+		}
+		if ($('#transaction_fee_checkbox_radio').length) {
+			$('#transaction_fee_checkbox_radio').prop('checked', false).trigger('change');
+		}
+		$(".donation-level-user-entered input").val(val);
+		$('.modal').modal('hide');
+		$("#pstep_finish").trigger("click");
+	});
+
+	$(".modal-content a").click(function() {
+		if ($('input[name="upsell_statushidden"]').length) {
+			$('input[name="upsell_statushidden"]').val('');
+		}
+		$('.modal').modal('hide');
+		$("#pstep_finish").trigger("click");
+	});
+
+	//recreate button for submit and then click the real submit
+	$(document).ready(function($) {
+		$("#pstep_finish_trigger")
+			.off('click')
+			.on('click', function(e) {
+				e.preventDefault();
+				var index = 0,
+					val = 0;
+				var options = $('input[name="cust-level"]'); //:checked').attr("data-val");
+				options.each(function(key) {
+					if ($(this).is(':checked')) {
+						val = $(this).attr("data-val");
+						if ($(this).closest('.donate-level-container--other').length) {
+							index = 0;
+							val = $('.donation-level-user-entered input').val();
+						} else {
+							index = key;
+						}
+					}
+				})
+				// check for transaction fee presence
+				if ($('#process-fees-container').length || $('#transaction_fee_checkbox_radio').length) {
+					var processingFeeVal = $('#additional_amountname').val() ? $('#additional_amountname').val() : 0;
+					$('#additional_amountname').val('');
+					val = (parseFloat(val) + parseFloat(processingFeeVal)).toFixed(2);
+					console.log('amount updated with processing fee (modal version)');
+				}
+				var newVal = calculateMonthly(val, index);
+				$(".donation-level-user-entered input").val(val);
+
+				if ($("#monthly_trigger").prop("checked") == true) {
+					$("#pstep_finish").trigger("click");
+				}
+
+				//set modal
+				if (mode == 0 && val != 0) {
+					$('.modal-amt').text(newVal);
+					if (newVal >= 84) {
+						$('.modal').find('.js-golden-circle').show();
+						$('.modal').find('.js-non-golden-circle').hide();
+					} else {
+						$('.modal').find('.js-non-golden-circle').show();
+						$('.modal').find('.js-golden-circle').hide();
+					}
+					$('.modal').modal('show');
+				}
+				//$("#pstep_finish").trigger("click");
+				return false;
+			});
+	});
+
+</script>
